@@ -1,12 +1,141 @@
 {
   "path": ".",
-  "variables": {},
-  "outputs": {},
+  "variables": {
+    "prefix": {
+      "name": "prefix",
+      "type": "string",
+      "description": "A unique identifier for resources. Must begin with a letter and end with a letter or number. This prefix will be prepended to any resources provisioned by this template. Prefixes must be 16 or fewer characters.",
+      "default": "icse",
+      "pos": {
+        "filename": "variables.tf",
+        "line": 5
+      }
+    },
+    "resource_group_id": {
+      "name": "resource_group_id",
+      "type": "string",
+      "description": "ID of the resource group where gateway will be provisioned",
+      "pos": {
+        "filename": "variables.tf",
+        "line": 16
+      }
+    },
+    "subnet_id": {
+      "name": "subnet_id",
+      "type": "string",
+      "description": "ID of the subnet where the gateway will be created",
+      "pos": {
+        "filename": "variables.tf",
+        "line": 41
+      }
+    },
+    "tags": {
+      "name": "tags",
+      "type": "list(string)",
+      "description": "List of Tags for the resource created",
+      "pos": {
+        "filename": "variables.tf",
+        "line": 22
+      }
+    },
+    "vpc_id": {
+      "name": "vpc_id",
+      "type": "string",
+      "description": "ID of the VPC where the gateway will be created",
+      "pos": {
+        "filename": "variables.tf",
+        "line": 35
+      }
+    },
+    "vpn_gateway": {
+      "name": "vpn_gateway",
+      "type": "object({\n    use_vpn_gateway = bool             # create vpn gateway\n    name            = optional(string) # gateway name\n    mode            = optional(string) # Can be `route` or `policy`. Default is `route`\n    connections = optional(list(\n      object({\n        peer_address   = string\n        preshared_key  = string\n        local_cidrs    = optional(list(string))\n        peer_cidrs     = optional(list(string))\n        admin_state_up = optional(bool)\n      })\n    ))\n  })",
+      "description": "VPN Gateways to create.",
+      "default": {
+        "connections": [],
+        "name": "vpn-gateway",
+        "subnet_name": "subnet-a",
+        "use_vpn_gateway": true
+      },
+      "pos": {
+        "filename": "variables.tf",
+        "line": 53
+      }
+    }
+  },
+  "outputs": {
+    "vpn_gateway": {
+      "name": "vpn_gateway",
+      "description": "VPN Gateway information",
+      "pos": {
+        "filename": "outputs.tf",
+        "line": 5
+      }
+    }
+  },
   "required_core": [
-    "\u003e= 1.0.0"
+    "\u003e=1.3"
   ],
-  "required_providers": {},
-  "managed_resources": {},
+  "required_providers": {
+    "ibm": {
+      "source": "IBM-Cloud/ibm",
+      "version_constraints": [
+        "~\u003e1.43.0"
+      ]
+    }
+  },
+  "managed_resources": {
+    "ibm_is_vpn_gateway.gateway": {
+      "mode": "managed",
+      "type": "ibm_is_vpn_gateway",
+      "name": "gateway",
+      "attributes": {
+        "count": "vpn_gateway",
+        "mode": "vpn_gateway",
+        "name": "prefix",
+        "resource_group": "resource_group_id",
+        "subnet": "subnet_id",
+        "tags": "tags"
+      },
+      "provider": {
+        "name": "ibm"
+      },
+      "pos": {
+        "filename": "main.tf",
+        "line": 5
+      }
+    },
+    "ibm_is_vpn_gateway_connection.gateway_connection": {
+      "mode": "managed",
+      "type": "ibm_is_vpn_gateway_connection",
+      "name": "gateway_connection",
+      "attributes": {
+        "for_each": "vpn_gateway",
+        "vpn_gateway": "vpn_gateway"
+      },
+      "provider": {
+        "name": "ibm"
+      },
+      "pos": {
+        "filename": "main.tf",
+        "line": 42
+      }
+    }
+  },
   "data_resources": {},
-  "module_calls": {}
+  "module_calls": {
+    "vpn_gateway_connection_map": {
+      "name": "vpn_gateway_connection_map",
+      "source": "./list_to_map",
+      "attributes": {
+        "list": "vpc_id"
+      },
+      "managed_resources": null,
+      "data_resources": null,
+      "pos": {
+        "filename": "main.tf",
+        "line": 25
+      }
+    }
+  }
 }

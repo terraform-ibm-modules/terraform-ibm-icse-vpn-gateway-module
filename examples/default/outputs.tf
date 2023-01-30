@@ -1,18 +1,10 @@
 ##############################################################################
-# Outputs
+# VPN Gateway Outputs
 ##############################################################################
 
-output "vpc_id" {
-  description = "ID of VPC created"
-  value       = ibm_is_vpc.vpc.id
+output "vpn_gateway" {
+  description = "VPN Gateway information"
+  value       = var.vpn_gateway.use_vpn_gateway == true && var.vpn_gateway.connections != null ? ibm_is_vpn_gateway.gateway[0] : null
 }
 
-output "resource_group_name" {
-  description = "Resource group name"
-  value       = module.resource_group.resource_group_name
-}
-
-output "resource_group_id" {
-  description = "Resource group ID"
-  value       = module.resource_group.resource_group_id
-}
+##############################################################################
