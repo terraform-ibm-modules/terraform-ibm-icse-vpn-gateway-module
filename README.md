@@ -136,23 +136,38 @@ statement instead the previous block.
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0.0 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >=1.3 |
+| <a name="requirement_ibm"></a> [ibm](#requirement\_ibm) | ~>1.43.0 |
 
 ## Modules
 
-No modules.
+| Name | Source | Version |
+|------|--------|---------|
+| <a name="module_vpn_gateway_connection_map"></a> [vpn\_gateway\_connection\_map](#module\_vpn\_gateway\_connection\_map) | ./list_to_map | n/a |
 
 ## Resources
 
-No resources.
+| Name | Type |
+|------|------|
+| [ibm_is_vpn_gateway.gateway](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_vpn_gateway) | resource |
+| [ibm_is_vpn_gateway_connection.gateway_connection](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_vpn_gateway_connection) | resource |
 
 ## Inputs
 
-No inputs.
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| <a name="input_prefix"></a> [prefix](#input\_prefix) | A unique identifier for resources. Must begin with a letter and end with a letter or number. This prefix will be prepended to any resources provisioned by this template. Prefixes must be 16 or fewer characters. | `string` | `"icse"` | no |
+| <a name="input_resource_group_id"></a> [resource\_group\_id](#input\_resource\_group\_id) | ID of the resource group where gateway will be provisioned | `string` | `null` | no |
+| <a name="input_subnet_id"></a> [subnet\_id](#input\_subnet\_id) | ID of the subnet where the gateway will be created | `string` | `null` | no |
+| <a name="input_tags"></a> [tags](#input\_tags) | List of Tags for the resource created | `list(string)` | `null` | no |
+| <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | ID of the VPC where the gateway will be created | `string` | `null` | no |
+| <a name="input_vpn_gateway"></a> [vpn\_gateway](#input\_vpn\_gateway) | VPN Gateways to create. | <pre>object({<br>    use_vpn_gateway = bool             # create vpn gateway<br>    name            = optional(string) # gateway name<br>    mode            = optional(string) # Can be `route` or `policy`. Default is `route`<br>    connections = optional(list(<br>      object({<br>        peer_address   = string<br>        preshared_key  = string<br>        local_cidrs    = optional(list(string))<br>        peer_cidrs     = optional(list(string))<br>        admin_state_up = optional(bool)<br>      })<br>    ))<br>  })</pre> | <pre>{<br>  "connections": [],<br>  "name": "vpn-gateway",<br>  "subnet_name": "subnet-a",<br>  "use_vpn_gateway": true<br>}</pre> | no |
 
 ## Outputs
 
-No outputs.
+| Name | Description |
+|------|-------------|
+| <a name="output_vpn_gateway"></a> [vpn\_gateway](#output\_vpn\_gateway) | VPN Gateway information |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 <!-- BEGIN CONTRIBUTING HOOK -->
 
