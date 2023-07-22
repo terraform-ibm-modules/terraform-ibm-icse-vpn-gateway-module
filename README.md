@@ -131,27 +131,27 @@ statement instead the previous block.
 
 <!-- END EXAMPLES HOOK -->
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
-## Requirements
+### Requirements
 
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >=1.3 |
 | <a name="requirement_ibm"></a> [ibm](#requirement\_ibm) | ~>1.43.0 |
 
-## Modules
+### Modules
 
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_vpn_gateway_connection_map"></a> [vpn\_gateway\_connection\_map](#module\_vpn\_gateway\_connection\_map) | ./list_to_map | n/a |
 
-## Resources
+### Resources
 
 | Name | Type |
 |------|------|
 | [ibm_is_vpn_gateway.gateway](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_vpn_gateway) | resource |
 | [ibm_is_vpn_gateway_connection.gateway_connection](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_vpn_gateway_connection) | resource |
 
-## Inputs
+### Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
@@ -162,7 +162,7 @@ statement instead the previous block.
 | <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | ID of the VPC where the gateway will be created | `string` | `null` | no |
 | <a name="input_vpn_gateway"></a> [vpn\_gateway](#input\_vpn\_gateway) | VPN Gateways to create. | <pre>object({<br>    use_vpn_gateway = bool             # create vpn gateway<br>    name            = optional(string) # gateway name<br>    mode            = optional(string) # Can be `route` or `policy`. Default is `route`<br>    connections = optional(list(<br>      object({<br>        peer_address   = string<br>        preshared_key  = string<br>        local_cidrs    = optional(list(string))<br>        peer_cidrs     = optional(list(string))<br>        admin_state_up = optional(bool)<br>      })<br>    ))<br>  })</pre> | <pre>{<br>  "connections": [],<br>  "name": "vpn-gateway",<br>  "subnet_name": "subnet-a",<br>  "use_vpn_gateway": true<br>}</pre> | no |
 
-## Outputs
+### Outputs
 
 | Name | Description |
 |------|-------------|
